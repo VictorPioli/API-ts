@@ -10,4 +10,16 @@ export default class UserRepository {
     async findAllUsers() {
         return await UserModel.find()
     }
+
+    async findByEmail(email: string) {
+        const user = await UserModel.findOne({email: email})
+
+        if(!user) return null
+
+        return new User(
+            user.name,
+            user.email,
+            user.password
+        )
+    } 
 }

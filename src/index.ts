@@ -16,6 +16,7 @@ async function startServer() {
         app.use(express.json());
         
         app.get('/users', (req: Request, res: Response) => controller.findAllUser(req, res));
+        app.post('/login', (req: Request, res: Response) => controller.login(req, res));
         app.post('/users', (req: Request, res: Response) => controller.createUser(req, res));
 
         app.listen(port, () => {
