@@ -29,3 +29,15 @@ async function startServer() {
 }
 
 startServer();
+
+/*
+-Melhorias futuras:
+
+Curto Prazo:
+-Adicionar JWT
+-Adicionar ZOD
+
+Longo Prazo:
+-Adicionar Mapper
+-Tentar mudança de banco de dados.
+*/

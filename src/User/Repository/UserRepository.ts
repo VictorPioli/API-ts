@@ -1,6 +1,11 @@
 import User from "../Entities/User.js";
 import { UserModel } from "./UserModel.js";
 
+type UserMongo = {
+    name: string,
+    email: string,
+    password: string
+}
 export default class UserRepository {
 
     async createUser(user: User) {
@@ -12,7 +17,7 @@ export default class UserRepository {
     }
 
     async findByEmail(email: string) {
-        const user = await UserModel.findOne({email: email})
+        const user = await UserModel.findOne({email: email}).lean<UserMongo>();
 
         if(!user) return null
 

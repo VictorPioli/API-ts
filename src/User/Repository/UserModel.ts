@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
-import { IUserDocument } from "./IUserDocumente.js";
 
-const UserSchema = new mongoose.Schema<IUserDocument>({
+const UserSchema = new mongoose.Schema({
   name: String,
   email: String,
   password: String
 });
 
-export const UserModel = mongoose.model<IUserDocument>("User", UserSchema);
+export const UserModel = mongoose.model("User", UserSchema);
