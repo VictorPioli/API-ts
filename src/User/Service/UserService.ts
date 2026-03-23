@@ -1,14 +1,16 @@
 import UserRepository from "../Repository/UserRepository.js";
-import { CreateUserDTO } from "../Dtos/CreateUserDtos.js";
 import User from "../Entities/User.js";
-import { LoginUserDTO } from "../Dtos/LoginUserDtos.js";
 import { hashPassword, comparePassword } from '../../utils/hashPassword.js'
+import { generateToken } from "../../utils/generateToken.js";
+
+import { CreateUserInput } from "../Schema/CreaterUserSchema.js";
+import { LoginUserInput } from "../Schema/LoginUserSchema.js";
 //Aplicar as regras de negócio
 
 export default class UserService {
     constructor(private userRepository: UserRepository) { }
 
-    async createUser(data: CreateUserDTO) {
+    async createUser(data: CreateUserInput) {
         if (!data.email.includes("@")) {
             throw new Error("Email inválido")
         }
@@ -28,15 +30,19 @@ export default class UserService {
         return await this.userRepository.findByEmail(email)
     }
 
-    async login(data: LoginUserDTO) {
+    async login(data: LoginUserInput) {
         const user = await this.userRepository.findByEmail(data.email);
         if (!user) {
             throw new Error("Usuário não encontrado");
         }
         const matchPassword = await comparePassword(data.password, user.password);
-        console.log("Match Status", matchPassword)
+
+
         if (matchPassword) {
-            return "Usuário logado com sucesso";
+            const token = generateToken({
+                email: user.email
+            });
+            return { user, token }
         } else {
             throw new Error("Senha inválida");
         }

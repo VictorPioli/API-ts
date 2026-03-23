@@ -1,11 +1,7 @@
 import User from "../Entities/User.js";
 import { UserModel } from "./UserModel.js";
+import { userMongoSchema } from "../Schema/UserSchema.js";
 
-type UserMongo = {
-    name: string,
-    email: string,
-    password: string
-}
 export default class UserRepository {
 
     async createUser(user: User) {
@@ -17,14 +13,21 @@ export default class UserRepository {
     }
 
     async findByEmail(email: string) {
-        const user = await UserModel.findOne({email: email}).lean<UserMongo>();
 
-        if(!user) return null
+        const user = await UserModel.findOne({ email: email }).lean();
 
+        if (!user) return null
+
+        const result = userMongoSchema.safeParse(user);
+        if (!result.success) {
+            throw new Error("Invalid user data in database for email!")
+        }
+        const parsed = result.data
         return new User(
-            user.name,
-            user.email,
-            user.password
+            parsed.name,
+            parsed.email,
+            parsed.password
         )
-    } 
+
+    }
 }

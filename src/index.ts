@@ -16,9 +16,9 @@ async function startServer() {
         app.use(express.json());
         
         app.get('/users', (req: Request, res: Response) => controller.findAllUser(req, res));
-        app.post('/login', (req: Request, res: Response) => controller.login(req, res));
         app.post('/users', (req: Request, res: Response) => controller.createUser(req, res));
-
+        app.post('/login', (req: Request, res: Response) => controller.login(req, res));
+        
         app.listen(port, () => {
             console.log(`O servidor está rodando na porta ${port}`);
         });
@@ -29,15 +29,3 @@ async function startServer() {
 }
 
 startServer();
-
-/*
--Melhorias futuras:
-
-Curto Prazo:
--Adicionar JWT
--Adicionar ZOD
-
-Longo Prazo:
--Adicionar Mapper
--Tentar mudança de banco de dados.
-*/
